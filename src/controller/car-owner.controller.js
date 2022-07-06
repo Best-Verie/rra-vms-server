@@ -1,4 +1,6 @@
 const { Owner, validateData } = require("./../model/car-owner.model");
+
+//method to register a new owner
 exports.registerCarOwner = async (req, res) => {
     try {
         const { error } = validateData(req.body);
@@ -9,6 +11,7 @@ exports.registerCarOwner = async (req, res) => {
         phone: req.body.phone,
         nationalId: req.body.nationalId,
         address: req.body.address,
+        vehicles: req.body.vehicles
         });
     
         const ownerFound = await Owner.findOne({ nationalId: req.body.nationalId });
@@ -20,9 +23,11 @@ exports.registerCarOwner = async (req, res) => {
     }
 }
 
+//method to get all  owner
+
 exports.getAllCarOwners = async (req, res) => {
     try {
-        const owners = await Owner.find();
+        const owners = await Owner.find().populate("vehicles");
         res.status(200).send(owners);
     } catch (error) {
         res.status(500).send(error.toString());

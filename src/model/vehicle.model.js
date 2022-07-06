@@ -1,8 +1,32 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
-const ownerShip = require("../enum/ownership.enum");
-const { string } = require("joi");
 
+
+/**
+ * @swagger
+ * definitions:
+ *   Vehicle:
+ *     properties:
+ *       chasisNumber:
+ *         type: string
+ *       manufastureCompany:
+ *         type: string
+ *       manufactureYear:
+ *         type: string
+ *       price:
+ *         type: string
+ *       plateNumber:
+ *        type: string
+ *       modelName:
+ *        type: string
+ *     required:
+ *       - chassisNumber
+ *       - manufastureCompany
+ *       - manufactureYear
+ *       - price
+ *       - plateNumber
+ *       - modelName
+ */
 
 const vehicleSchema = new mongoose.Schema(
   {
@@ -28,17 +52,14 @@ const vehicleSchema = new mongoose.Schema(
     },
     plateNumber:{
         type: String,
-        required: true,
+        required: false,
+        empty: true,
     },
     modelName:{
         type: String,
         required: true,
     },
-    ownerShip: {
-        default: 'NEW',
-        type: String,
-        enum: ['USED', 'NEW']
-    },
+   
     // owner:{
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: "Owner",
@@ -58,10 +79,8 @@ exports.validateData = (data) => {
          manufastureCompany: Joi.string().min(3).required(),
          manufactureYear: Joi.string().min(3).required(),
          price: Joi.string().min(3).required(),
-         plateNumber: Joi.string().min(3).required(),
+         plateNumber: Joi.string().min(9),
          modelName: Joi.string().min(3).required(),
-         ownerShip: Joi.string().min(3).required(),
-        // owner: Joi.string().min(3).required(),
     });
   return schema.validate(data);
 };

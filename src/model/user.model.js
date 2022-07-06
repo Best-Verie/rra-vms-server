@@ -1,8 +1,27 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
 const jwt = require("jsonwebtoken");
+const {registerSchema, registerSchemas } = require("swaggify");
 
-
+/**
+ * @swagger
+ * definitions:
+ *   User:
+ *     properties:
+ *       names:
+ *         type: string
+ *       phone:
+ *         type: string
+ *       email:
+ *         type: string
+ *       nationalId:
+ *         type: string
+ *     required:
+ *       - names
+ *       - phone
+ *       - email
+ *       - nationalId
+ */
 const userSchema = new mongoose.Schema(
   {
     
@@ -53,5 +72,10 @@ exports.validateData = (data, action) => {
   return schema.validate(data);
 };
 
+// registerSchema('User', userSchema, {orm: 'mongoose'});
+// registerSchemas('User', userSchema, {orm: 'mongoose'});
+
 const User = mongoose.model("User", userSchema);
 module.exports.User = User;
+
+
